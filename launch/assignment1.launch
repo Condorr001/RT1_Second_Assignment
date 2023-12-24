@@ -1,10 +1,15 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find assignment_2_2023)/launch/sim_w1.launch" />
-    <param name="des_pos_x" value="0.0" />
-    <param name="des_pos_y" value="1.0" />
-    <node pkg="assignment_2_2023" type="wall_follow_service.py" name="wall_follower" />
-    <node pkg="assignment_2_2023" type="go_to_point_service.py" name="go_to_point"  />
-    <node pkg="assignment_2_2023" type="bug_as.py" name="bug_action_service" output="screen" />
-    <node pkg="assignment_2_2023" type="action_client" name="action_client" output="screen" />
+    <include file="$(find rt1_second_assignment)/launch/sim_w1.launch" />
+    
+    <param name="publish_frequency" type="double" value="1.0" />
+    <param name="des_pos_x" value= "0.0" />
+    <param name="des_pos_y" value= "1.0" />
+    
+    <node pkg="rt1_second_assignment" type="wall_follow_service.py" name="wall_follower" />
+    <node pkg="rt1_second_assignment" type="go_to_point_service.py" name="go_to_point"  />
+    <node pkg="rt1_second_assignment" type="bug_as.py" name="bug_action_service"  />
+    <node pkg="rt1_second_assignment" type="action_client.py" name="action_client" output="screen" launch-prefix="xterm -hold -e"  />
+    <node pkg="rt1_second_assignment" type="custom_msg_subscriber.py" name="custom_msg_subscriber" output="screen" launch-prefix="xterm -hold -e"  />
+    <node pkg="rt1_second_assignment" type="custom_service.py" name="custom_service" output="screen" launch-prefix="xterm -hold -e" />
 </launch>

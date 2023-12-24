@@ -1,0 +1,6 @@
+# Request
+int32 input  # input value for the service request
+---
+# Response
+float64 x  # value the x coordinate of the last target set by the user
+float64 y  # value the y coordinate of the last target set by the user
