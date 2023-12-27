@@ -5,24 +5,29 @@ import rt1_second_assignment.msg
 
 from rt1_second_assignment.srv import Last_input_coordinates, Last_input_coordinatesResponse
 
-
 # Callback for result subscriber
 def srv_callback(msg):
 	global x
 	global y
+	global printed_service
+	printed_service = False
 	
 	# Get the status of the result
 	x = msg.goal.target_pose.pose.position.x
 	y = msg.goal.target_pose.pose.position.y
 		
 # function for the custom service
-def srv_function(req):
+def srv_function(required):
 	global x
 	global y
+	global printed_service
 	
 	# print the coordinates of the last input target
-	print(f"\n\n Last target input x coordinate: {x} m")
-	print(f" \n Last target input y coordinate: {y} m")
+	if not printed_service:
+		print(f"\n\n Last target input x coordinate: {x} m")
+		print(f" \n Last target input y coordinate: {y} m")
+		printed_service = True
+		
 	return Last_input_coordinatesResponse(x, y)
 
 if __name__ == '__main__':
@@ -40,4 +45,4 @@ if __name__ == '__main__':
 		rospy.spin()
 		
 	except rospy.ROSInterruptException:
-		print("\n Program interrupted before completion", file=sys.stderr)
+		print("\n Error: program died unexpectedly", file=sys.stderr)

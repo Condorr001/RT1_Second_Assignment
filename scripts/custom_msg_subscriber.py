@@ -22,10 +22,10 @@ def msg_callback(msg):
 	x = msg.x
 	y = msg.y
 	
-	# Compute the distance
+	# compute the distance between the robot and the desired position
 	dist = math.dist([x_desired, y_desired], [x, y])
 	
-	# Compute the average speed
+	# compute the average speed of the robot
 	vel = math.sqrt(msg.vel_x**2 + msg.vel_y**2)
 	
 def print_message():
@@ -52,4 +52,4 @@ if __name__ == '__main__':
 			rate.sleep()
 			
 	except rospy.ROSInterruptException:
-		print("\n Program interrupted before completion", file=sys.stderr)
+		print("\n Error: program died unexpectedly", file=sys.stderr)

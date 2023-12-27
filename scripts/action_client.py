@@ -30,9 +30,9 @@ import rt1_second_assignment.msg
 #import the needed services
 from std_srvs.srv import *
 
-import time
 #import sys to output eventual errors in sys.stderr
 import sys
+#import select to perform a non-blocking input
 import select
 
 #import the os so that all the nodes can be killed if the user does not want to create another target
@@ -77,15 +77,18 @@ def status0():
 def status1():
 	global tmp_status
 	global goal_has_been_reached
+	global printed_status1
 	
 	# the custom service is executed everytime the user enters a new goal/target
 	exec_custom_service()
 	
-	
 	# wait for the user to eventually press 'q' to cancel the goal
-	print("\n\n The robot is moving. If you want to cancel the current goal, please enter 'q'  ")
+	if printed_status1 == False:
+		print("\n\n The robot is moving. If you want to cancel the current goal, please enter 'q'  ")
+		printed_status1 = True
 	
 	# with a simple input, we program was infinitely waiting for a user input, even when the target was reached
+	# the select is a non-blocking version of "input()" when put in reading mode as below
 	cancel_input = select.select([sys.stdin], [], [], 1)[0]
 			
 	# if there is an input
@@ -97,7 +100,7 @@ def status1():
 			client.cancel_goal()
 			tmp_status = 2
 		else:
-			print("\n Wrong input")
+			print("\n Wrong input. If you want to cancel the current goal, please enter 'q'  ")
 		
 	# we temporarily go to status2 even if the goal has been reached
 	if goal_has_been_reached:
@@ -106,6 +109,7 @@ def status1():
 def status2():
 	global tmp_status
 	global goal_has_been_reached
+	global printed_status1
 	
 	# distinction between status == 2 (goal cancelled) and status == 3 (goal reached)
 	if goal_has_been_reached:
@@ -122,6 +126,7 @@ def status2():
 		# reset go back to status0
 		tmp_status = 0
 		goal_has_been_reached = False
+		printed_status1 = False
 	elif new_goal_input == "n":
 		nodes = os.popen("rosnode list").readlines()
 		for i in range(len(nodes)):
@@ -130,7 +135,8 @@ def status2():
 		for node in nodes:
 		    os.system("rosnode kill "+ node)
 	else:
-		new_goal_input = input("\n\n Wrong input.\n Do you want set a new goal? Type 'y' for yes, 'n' for no:  ")
+		#new_goal_input = input("\n\n Wrong input.\n Do you want set a new goal? Type 'y' for yes, 'n' for no:  ")
+		print("\n\n Wrong input")
 
 def default():
 	print("\n\n Error in tmp_status value\n")
@@ -212,6 +218,8 @@ def robot_status():
 	global tmp_status
 	tmp_status = 0
 	global goal_has_been_reached
+	global printed_status1
+	printed_status1 = False
 
 	
 	while not rospy.is_shutdown():
@@ -245,4 +253,4 @@ if __name__ == '__main__':
 		robot_status()
 		
 	except rospy.ROSInterruptException:
-		print("\n Program interrupted before completion", file=sys.stderr)
+		print("\n Error: program died unexpectedly", file=sys.stderr)
