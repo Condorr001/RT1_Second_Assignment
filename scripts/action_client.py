@@ -22,7 +22,6 @@ import rospy
 #import the needed messages
 from geometry_msgs.msg import Point, Pose, Twist
 from nav_msgs.msg import Odometry
-import math
 import actionlib
 import actionlib.msg
 #used for the custom message
@@ -32,6 +31,7 @@ import rt1_second_assignment.msg
 from std_srvs.srv import *
 
 import time
+#import sys to output eventual errors in sys.stderr
 import sys
 import select
 
@@ -76,20 +76,29 @@ def status0():
 
 def status1():
 	global tmp_status
+	global goal_has_been_reached
 	
 	# the custom service is executed everytime the user enters a new goal/target
 	exec_custom_service()
 	
+	
 	# wait for the user to eventually press 'q' to cancel the goal
-	cancel_input = input("\n\n The robot is moving. If you want to cancel the current goal, please enter 'q'  ")
+	print("\n\n The robot is moving. If you want to cancel the current goal, please enter 'q'  ")
+	
+	# with a simple input, we program was not waiting for an actual 'q' and returned an error when 'q' was inserted
+	cancel_input = select.select([sys.stdin], [], [], 1)[0]
 			
 	# if there is an input
-	if cancel_input == "q":
-		# cancel the goal and go to the third state
-		client.cancel_goal()
-		tmp_status = 2
-	else:
-		print("\n Wrong input")
+	if cancel_input:
+		# get the input character
+		input_character = sys.stdin.readline().rstrip()
+		#input_character = input_character.replace(" ","")
+		if input_character == "q":
+			# Cancel the goal and go to the third state
+			client.cancel_goal()
+			tmp_status = 2
+		else:
+			print("\n Wrong input")
 		
 	# we temporarily go to status2 even if the goal has been reached
 	if goal_has_been_reached:
@@ -97,6 +106,7 @@ def status1():
 		
 def status2():
 	global tmp_status
+	global goal_has_been_reached
 	
 	# distinction between status == 2 (goal cancelled) and status == 3 (goal reached)
 	if goal_has_been_reached:
