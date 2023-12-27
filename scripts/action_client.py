@@ -85,14 +85,13 @@ def status1():
 	# wait for the user to eventually press 'q' to cancel the goal
 	print("\n\n The robot is moving. If you want to cancel the current goal, please enter 'q'  ")
 	
-	# with a simple input, we program was not waiting for an actual 'q' and returned an error when 'q' was inserted
+	# with a simple input, we program was infinitely waiting for a user input, even when the target was reached
 	cancel_input = select.select([sys.stdin], [], [], 1)[0]
 			
 	# if there is an input
 	if cancel_input:
 		# get the input character
 		input_character = sys.stdin.readline().rstrip()
-		#input_character = input_character.replace(" ","")
 		if input_character == "q":
 			# Cancel the goal and go to the third state
 			client.cancel_goal()
@@ -124,7 +123,12 @@ def status2():
 		tmp_status = 0
 		goal_has_been_reached = False
 	elif new_goal_input == "n":
-		print("\n\n Thanks for using my program!\n Please press 'ctrl+c' in the shell running the program to close everything (it may take a while)")
+		nodes = os.popen("rosnode list").readlines()
+		for i in range(len(nodes)):
+		    nodes[i] = nodes[i].replace("\n","")
+
+		for node in nodes:
+		    os.system("rosnode kill "+ node)
 	else:
 		new_goal_input = input("\n\n Wrong input.\n Do you want set a new goal? Type 'y' for yes, 'n' for no:  ")
 
@@ -213,20 +217,6 @@ def robot_status():
 	while not rospy.is_shutdown():
 		switch(tmp_status)
 
-"""
-def client():
-	
-	Function that creates the action client and calls the function *robot_status* that manages the phases of the program.
-	
-	# Create the action client
-	global client
-	client = actionlib.SimpleActionClient('/reaching_goal', RT1_second_assignment.msg.PlanningAction)
-	# Wait for the server to be started
-	client.wait_for_server()
-	
-	# Call the function that manages all the robot's action
-	robot_status()
-"""
 
 if __name__ == '__main__':
 	try:
