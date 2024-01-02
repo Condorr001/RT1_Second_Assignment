@@ -7,13 +7,18 @@ import time
 from RT1_second_assignment.msg import pos_and_vel
 
 freq = rospy.get_param("publish_frequency")
+
+# initialize the global variables
 dist = 0
-vel = 0
+lin_vel = 0
+ang_vel = 0
 
 
 def msg_callback(msg):
 	global dist
-	global vel
+	global lin_vel
+	global ang_vel
+	
 	# get the the desired position of the robot
 	x_desired = rospy.get_param("des_pos_x")
 	y_desired = rospy.get_param("des_pos_y")
@@ -23,17 +28,31 @@ def msg_callback(msg):
 	y = msg.y
 	
 	# compute the distance between the robot and the desired position
-	dist = math.dist([x_desired, y_desired], [x, y])
+	"""
+	N.B.: there is a base error between the robot actual position and the target.
+	Indeed, the robot switches to status 3 (equivalent to target reached) when the 
+	distance to the target is still 0.50.
+	Therefore, to have a better output in the message, 0.50 is subtracted from the 
+	computed distance, with the minimum set to 0.0 as a distance can not be negative 
+	"""
 	
-	# compute the average speed of the robot
-	vel = math.sqrt(msg.vel_x**2 + msg.vel_y**2)
+	dist = math.dist([x_desired, y_desired], [x, y]) - 0.50
+	if dist < 0.00:
+		dist = 0.00
+	
+	# save the linear and angular velocities of the robot
+	lin_vel = msg.vel_x
+	ang_vel = msg.vel_y
 	
 def print_message():
 	global dist
-	global vel
+	global lin_vel
+	global ang_vel
+	
 	# print the values
 	print("\n\nDistance from the desired position: {:.2f} m".format(dist))
-	print("Robot average speed: {:.2f} m/s".format(vel))
+	print("Robot linear velocity along x: {:.2f} m/s".format(lin_vel))
+	print("Robot angular velocity along z: {:.2f} m/s".format(ang_vel))
 	
 
 if __name__ == '__main__':

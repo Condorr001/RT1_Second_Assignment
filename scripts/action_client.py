@@ -11,7 +11,8 @@ VALENTINA CONDORELLI - S4945679
    /reaching_goal/result 
 
   Publishers:
-   /pos_and_vel -> custom message used above
+   /pos_and_vel -> custom message to obtain and print the robot position, linear velocity
+   		   along x-axis and angular velocity around z-axis
 
   Action client topic:
    /reaching_goal -> used to communicate with the action server "bug_as"
@@ -170,16 +171,17 @@ for the action client, four functions are needed:
 """
 
 def publish_custom_message(msg):
-	# get position and velocity from the msg in the /odom topic
+	# get position, linear velocity and angular velocity from the msg in the /odom topic
 	position = msg.pose.pose.position
 	vel_lin = msg.twist.twist.linear
+	vel_ang = msg.twist.twist.angular
 	
 	# define the custom message
 	pos_vel = pos_and_vel()
 	pos_vel.x = position.x
 	pos_vel.y = position.y
 	pos_vel.vel_x = vel_lin.x
-	pos_vel.vel_y = vel_lin.y
+	pos_vel.vel_y = vel_ang.z
 	
 	# publish the custom message
 	publisher.publish(pos_vel)
