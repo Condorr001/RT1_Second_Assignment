@@ -52,7 +52,7 @@ def print_message():
 	# print the values
 	print("\n\nDistance from the desired position: {:.2f} m".format(dist))
 	print("Robot linear velocity along x: {:.2f} m/s".format(lin_vel))
-	print("Robot angular velocity along z: {:.2f} m/s".format(ang_vel))
+	print("Robot angular velocity along z: {:.2f} rad/s".format(ang_vel))
 	
 
 if __name__ == '__main__':

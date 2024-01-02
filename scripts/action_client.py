@@ -50,30 +50,42 @@ goal_has_been_reached = False
 
 # define a dictionary to implement a switch-case structure in the "robot_status()" function explained and declared below
 def status0():
-	global tmp_status
-	
-	# waiting for the user input to define the goal
-	goal_input = input("\n\n Please enter 2 numbers for the x and y value of the goal to reach, separated by a comma:  ")
-		
-	# get the x and y values from the input string by:
-	# removing any space if present
-	goal_input = goal_input.replace(" ","")
-	# splitting the message based on the comma
-	new_goal = goal_input.split(",")
-	# saving x and y in two new variables
-	x = float(new_goal[0])
-	y = float(new_goal[1])
-	
-	# create the planning goal to communicate from action client to action server
-	planning_goal = rt1_second_assignment.msg.PlanningGoal()
-	planning_goal.target_pose.pose.position.x = x
-	planning_goal.target_pose.pose.position.y = y
-		
-	# send the goal to the action server
-	client.send_goal(planning_goal)
-	
-	# Go to the second state, since now the robot should be moving
-	tmp_status = 1
+    global tmp_status
+
+    # waiting for the user input to define the goal
+    goal_input = input("\n\n Please enter 2 numbers for the x and y value of the goal to reach, separated by a comma:  ")
+
+    # error checking in case of letters present in the input string
+    try:
+        # get the x and y values from the input string by:
+        # removing any space if present
+        goal_input = goal_input.replace(" ", "")
+
+        # splitting the message based on the comma
+        new_goal = goal_input.split(",")
+
+        # error checking in case only one number was inserted
+        if len(new_goal) >= 2:
+            # saving x and y in two new variables
+            x = float(new_goal[0])
+            y = float(new_goal[1])
+
+            # use x and y to define the planning goal to communicate from action client to action server
+            planning_goal = rt1_second_assignment.msg.PlanningGoal()
+            planning_goal.target_pose.pose.position.x = x
+            planning_goal.target_pose.pose.position.y = y
+
+            # send the goal to the action server
+            client.send_goal(planning_goal)
+
+            # Go to the second state, since now the robot should be moving
+            tmp_status = 1
+        else:
+            print("\nWrong input.")
+        
+    except ValueError:
+        print("\nWrong input.")
+
 
 def status1():
 	global tmp_status
