@@ -4,7 +4,7 @@ import rospy
 import math
 import time
 
-from RT1_second_assignment.msg import pos_and_vel
+from rt1_second_assignment.msg import pos_and_vel
 
 freq = rospy.get_param("publish_frequency")
 
