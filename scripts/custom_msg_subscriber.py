@@ -88,14 +88,6 @@ if __name__ == '__main__':
 		# inizialize the subscriber to the /pos_and_vel topic
 		subscriber = rospy.Subscriber("/pos_and_vel", pos_and_vel, msg_callback)
 		
-		"""
-		# set the frequency as declared in the launch file (as parameter)
-		rate = rospy.Rate(freq)
-		
-		while not rospy.is_shutdown():
-			print_message()
-			rate.sleep()
-		"""
 		# execute in a loop
 		rospy.spin()
 			
