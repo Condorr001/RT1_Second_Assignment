@@ -4,9 +4,11 @@ import rospy
 import math
 import time
 
-from rt1_second_assignment.msg import pos_and_vel
+from RT1_second_assignment.msg import pos_and_vel
 
+# get the window size and frequency values from the parameters in the launch file
 freq = rospy.get_param("publish_frequency")
+window_size = rospy.get_param('/window_size')
 
 # initialize the global variables
 dist = 0
@@ -40,9 +42,25 @@ def msg_callback(msg):
 	if dist < 0.00:
 		dist = 0.00
 	
-	# save the linear and angular velocities of the robot
-	lin_vel = msg.vel_x
-	ang_vel = msg.vel_y
+	# save the current linear and angular velocities of the robot
+	vel_x_linear = msg.vel_x
+	vel_z_angular = msg.vel_y
+	
+	# compute the average linear velocity based on the window size
+	if isinstance(vel_x_linear, list):
+            vel_x_instant = vel_x_linear[-window_size:]
+        else:
+            vel_x_instant = [vel_x_linear]
+            
+        lin_vel = sum(vel_x_instant) / min(len(vel_x_instant), window_size)
+        
+        # repeat for the angular velocity
+        if isinstance(vel_z_angular, list):
+            vel_z_instant = vel_z_angular[-window_size:]
+        else:
+            vel_z_instant = [vel_z_angular]
+            
+        ang_vel = sum(vel_z_instant) / min(len(vel_z_instant), window_size)
 	
 def print_message():
 	global dist
@@ -51,8 +69,8 @@ def print_message():
 	
 	# print the values
 	print("\n\nDistance from the desired position: {:.2f} m".format(dist))
-	print("Robot linear velocity along x: {:.2f} m/s".format(lin_vel))
-	print("Robot angular velocity along z: {:.2f} rad/s".format(ang_vel))
+	print("Robot average linear velocity along x: {:.2f} m/s".format(lin_vel))
+	print("Robot average angular velocity along z: {:.2f} rad/s".format(ang_vel))
 	
 
 if __name__ == '__main__':

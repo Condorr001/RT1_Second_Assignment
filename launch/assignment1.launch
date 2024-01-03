@@ -5,6 +5,7 @@
     <param name="publish_frequency" type="double" value="1.0" />
     <param name="des_pos_x" value= "0.0" />
     <param name="des_pos_y" value= "1.0" />
+    <param name="window_size" value="10.0" />
     
     <node pkg="rt1_second_assignment" type="wall_follow_service.py" name="wall_follower" />
     <node pkg="rt1_second_assignment" type="go_to_point_service.py" name="go_to_point"  />
