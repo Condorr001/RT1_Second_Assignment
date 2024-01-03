@@ -1,0 +1,7 @@
+# Request
+int32 input  # input value for the msg service request
+---
+# Response
+float64 dist  # distance between the robot and the target
+float64 lin_vel  # average value of the linear velocity on x
+float64 ang_vel  # average value of the angular velocity on z

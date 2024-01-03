@@ -4,7 +4,8 @@ import rospy
 import math
 import time
 
-from RT1_second_assignment.msg import pos_and_vel
+from rt1_second_assignment.msg import pos_and_vel
+from rt1_second_assignment.srv import Average_pos_vel, Average_pos_velResponse
 
 # get the window size and frequency values from the parameters in the launch file
 freq = rospy.get_param("publish_frequency")
@@ -48,21 +49,22 @@ def msg_callback(msg):
 	
 	# compute the average linear velocity based on the window size
 	if isinstance(vel_x_linear, list):
-            vel_x_instant = vel_x_linear[-window_size:]
-        else:
-            vel_x_instant = [vel_x_linear]
-            
-        lin_vel = sum(vel_x_instant) / min(len(vel_x_instant), window_size)
-        
-        # repeat for the angular velocity
-        if isinstance(vel_z_angular, list):
-            vel_z_instant = vel_z_angular[-window_size:]
-        else:
-            vel_z_instant = [vel_z_angular]
-            
-        ang_vel = sum(vel_z_instant) / min(len(vel_z_instant), window_size)
+	    vel_x_instant = vel_x_linear[-window_size:]
+	else:
+	    vel_x_instant = [vel_x_linear]
+
+	lin_vel = sum(vel_x_instant) / min(len(vel_x_instant), window_size)
+
+	# repeat for the angular velocity
+	if isinstance(vel_z_angular, list):
+	    vel_z_instant = vel_z_angular[-window_size:]
+	else:
+	    vel_z_instant = [vel_z_angular]
+
+	ang_vel = sum(vel_z_instant) / min(len(vel_z_instant), window_size)
+
 	
-def print_message():
+def msg_function(required):
 	global dist
 	global lin_vel
 	global ang_vel
@@ -72,21 +74,30 @@ def print_message():
 	print("Robot average linear velocity along x: {:.2f} m/s".format(lin_vel))
 	print("Robot average angular velocity along z: {:.2f} rad/s".format(ang_vel))
 	
+	return Average_pos_velResponse(dist, lin_vel, ang_vel)
+	
 
 if __name__ == '__main__':
 	try:
 		# initialize the node
 		rospy.init_node('custom_msg_subscriber')
 		
+		# initialize the service
+		s = rospy.Service('average_pos_vel', Average_pos_vel, msg_function)
+		
 		# inizialize the subscriber to the /pos_and_vel topic
 		subscriber = rospy.Subscriber("/pos_and_vel", pos_and_vel, msg_callback)
 		
+		"""
 		# set the frequency as declared in the launch file (as parameter)
 		rate = rospy.Rate(freq)
 		
 		while not rospy.is_shutdown():
 			print_message()
 			rate.sleep()
+		"""
+		# execute in a loop
+		rospy.spin()
 			
 	except rospy.ROSInterruptException:
 		print("\n Error: program died unexpectedly", file=sys.stderr)

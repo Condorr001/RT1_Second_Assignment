@@ -64,6 +64,7 @@ find_package(catkin REQUIRED COMPONENTS
  add_service_files(
    FILES
    Last_input_coordinates.srv
+   Average_pos_vel.srv
  )
 
 ## Generate actions in the 'action' folder

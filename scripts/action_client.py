@@ -42,8 +42,12 @@ import os
 # import custom message 
 from rt1_second_assignment.msg import pos_and_vel
 
-# import custom service
+# import custom services
 from rt1_second_assignment.srv import Last_input_coordinates, Last_input_coordinatesRequest, Last_input_coordinatesResponse
+from rt1_second_assignment.srv import Average_pos_vel, Average_pos_velRequest, Average_pos_velResponse
+
+# get frequency value from the launch file
+freq = rospy.get_param("publish_frequency")
 
 # declare a variable to know if the goal point has been reached or not
 goal_has_been_reached = False
@@ -94,6 +98,11 @@ def status1():
 	
 	# the custom service is executed everytime the user enters a new goal/target
 	exec_custom_service()
+	
+	# exec the service related to the custom msg with the frequency defined in the 
+	# launch file as "freq"
+	#timer = rospy.Timer(rospy.Duration(1.0 / freq), exec_custom_msg_service)
+	exec_custom_msg_service()
 	
 	# wait for the user to eventually press 'q' to cancel the goal
 	if printed_status1 == False:
@@ -224,6 +233,24 @@ def exec_custom_service():
     # error handling
     except rospy.ServiceException as e:
         print("\n Service call failed: %s" % e)
+        
+def exec_custom_msg_service():
+
+    # indefinitely wait for the service until it starts to avoid the client to start
+    # before the server
+    rospy.wait_for_service('average_pos_vel')
+    
+    try:
+        # handler for the service
+        custom_msg_service = rospy.ServiceProxy('average_pos_vel', Average_pos_vel)
+        
+        # define the request and the response of the service
+        request = Average_pos_velRequest()
+        response = custom_msg_service(request)
+    
+    # error handling
+    except rospy.ServiceException as e:
+        print("\n Service call failed: %s" % e)
 		
 
 def robot_status():
@@ -252,7 +279,7 @@ if __name__ == '__main__':
 		# inizialize the subscriber to the /odom topic so that the necessary values for the custom message can be retrieved
 		subscriber = rospy.Subscriber("/odom", Odometry, publish_custom_message)
 		
-		# initialize the subscriber to the result of the /reaching_goal topic to know the status of the action server
+		# initialize the subscriber to the /reaching_goal/result topic to know the status of the action server
 		sub_result = rospy.Subscriber('/reaching_goal/result', rt1_second_assignment.msg.PlanningActionResult, callback_goal_result)
 		
 		# finally, initialize the action client

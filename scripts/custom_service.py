@@ -38,7 +38,7 @@ if __name__ == '__main__':
 		# initialize the custom service
 		srv = s = rospy.Service('last_input_coordinates', Last_input_coordinates, srv_function)
 		
-		# subscribe to the result of the /reaching_goal topic to retrieve the necessary values
+		# subscribe to the /reaching_goal/goal topic to retrieve the necessary values
 		sub_result = rospy.Subscriber('/reaching_goal/goal', rt1_second_assignment.msg.PlanningActionGoal, srv_callback)
 		
 		# execute in a loop
