@@ -102,7 +102,6 @@ def status1():
 	
 	# exec the service related to the custom msg with the frequency defined in the 
 	# launch file as "freq"
-	#timer = rospy.Timer(rospy.Duration(1.0 / freq), exec_custom_msg_service)
 	exec_custom_msg_service()
 	
 	# wait for the user to eventually press 'q' to cancel the goal
