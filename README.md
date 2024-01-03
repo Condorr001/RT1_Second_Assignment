@@ -23,6 +23,10 @@ If you have git:
   ```bash
   $ chmod +x *.+py
   ```
+- Move to the main folder of your ROS workspace and run:
+  ```bash
+  $ catkin_make
+  ```
 - Finally, type in the terminal:
   ```bash
   $ roslaunch rt1_second_assignment assignment1.launch
