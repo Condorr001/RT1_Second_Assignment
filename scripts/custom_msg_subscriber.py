@@ -45,7 +45,7 @@ def msg_callback(msg):
 	
 	# save the current linear and angular velocities of the robot
 	vel_x_linear = msg.vel_x
-	vel_z_angular = msg.vel_y
+	vel_z_angular = msg.vel_z
 	
 	# compute the average linear velocity based on the window size
 	if isinstance(vel_x_linear, list):

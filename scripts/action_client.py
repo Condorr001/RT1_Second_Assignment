@@ -25,6 +25,7 @@ from geometry_msgs.msg import Point, Pose, Twist
 from nav_msgs.msg import Odometry
 import actionlib
 import actionlib.msg
+import actionlib_msgs.msg
 #used for the custom message
 import rt1_second_assignment.msg
 
@@ -124,7 +125,8 @@ def status1():
 		else:
 			print("\n Wrong input. If you want to cancel the current goal, please enter 'q'  ")
 		
-	# we temporarily go to status2 even if the goal has been reached
+	# if the goal has been reached (so status dwitched to 3 in the callback), still go to status2
+	# as the distinction is made there
 	if goal_has_been_reached:
 		tmp_status = 2
 		
@@ -134,6 +136,7 @@ def status2():
 	global printed_status1
 	
 	# distinction between status == 2 (goal cancelled) and status == 3 (goal reached)
+	# made with the variable goal_has_been_reached
 	if goal_has_been_reached:
 		# create and update a new variable called "last_input" for the custom service
 		new_goal_input = input("\n\n Yay! The goal has been reached!\n Do you want set a new goal? Type 'y' for yes, 'n' for no:  ")
@@ -202,7 +205,7 @@ def publish_custom_message(msg):
 	pos_vel.x = position.x
 	pos_vel.y = position.y
 	pos_vel.vel_x = vel_lin.x
-	pos_vel.vel_y = vel_ang.z
+	pos_vel.vel_z = vel_ang.z
 	
 	# publish the custom message
 	publisher.publish(pos_vel)
