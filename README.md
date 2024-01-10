@@ -74,6 +74,7 @@ The implementation of the other three nodes was the main focus of the project. T
 	- 3: the target has been successfully reached
 
   The behaviour of this node is explained in the flowchart below:
+  ![alt text](https://github.com/Condorr001/RT1_Second_Assignment/blob/main/flowchart/actionclient_flowchart.png)
  - `custom_service.py`: service node that, when called, retrieves, from the `/odom` topic, the last target set in input by the user, prints them and returns them. Given the structure of the `/odom` topic, the coordinates of the last target are retrieved as follows:
 	 ```
 		x = msg.goal.target_pose.pose.position.x
