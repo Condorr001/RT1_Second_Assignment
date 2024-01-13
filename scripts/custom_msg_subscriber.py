@@ -7,8 +7,7 @@ import time
 from rt1_second_assignment.msg import pos_and_vel
 from rt1_second_assignment.srv import Average_pos_vel, Average_pos_velResponse
 
-# get the window size and frequency values from the parameters in the launch file
-freq = rospy.get_param("publish_frequency")
+# get the window size from the parameters in the launch file
 window_size = rospy.get_param('/window_size')
 
 # initialize the global variables
@@ -87,7 +86,7 @@ if __name__ == '__main__':
 		
 		# inizialize the subscriber to the /pos_and_vel topic
 		subscriber = rospy.Subscriber("/pos_and_vel", pos_and_vel, msg_callback)
-		
+
 		# execute in a loop
 		rospy.spin()
 			

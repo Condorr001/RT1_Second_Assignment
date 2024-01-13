@@ -2,7 +2,6 @@
 <launch>
     <include file="$(find rt1_second_assignment)/launch/sim_w1.launch" />
     
-    <param name="publish_frequency" type="double" value="1.0" />
     <param name="des_pos_x" value= "0.0" />
     <param name="des_pos_y" value= "1.0" />
     <param name="window_size" value="10.0" />
