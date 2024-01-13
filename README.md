@@ -39,6 +39,7 @@ If the last command does not work, please:
   $ rospack list
   ```
 - Run again the `roslaunch` command
+- If it still does not work, please close the current terminal and open a new one
 
 
 #### If you don't have git
