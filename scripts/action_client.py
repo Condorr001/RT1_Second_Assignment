@@ -47,9 +47,6 @@ from rt1_second_assignment.msg import pos_and_vel
 from rt1_second_assignment.srv import Last_input_coordinates, Last_input_coordinatesRequest, Last_input_coordinatesResponse
 from rt1_second_assignment.srv import Average_pos_vel, Average_pos_velRequest, Average_pos_velResponse
 
-# get frequency value from the launch file
-freq = rospy.get_param("publish_frequency")
-
 # declare a variable to know if the goal point has been reached or not
 goal_has_been_reached = False
 
@@ -100,8 +97,7 @@ def status1():
 	# the custom service is executed everytime the user enters a new goal/target
 	exec_custom_service()
 	
-	# exec the service related to the custom msg with the frequency defined in the 
-	# launch file as "freq"
+	# exec the service related to the custom msg
 	exec_custom_msg_service()
 	
 	# wait for the user to eventually press 'q' to cancel the goal
