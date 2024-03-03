@@ -86,7 +86,7 @@ if __name__ == '__main__':
 		
 		# inizialize the subscriber to the /pos_and_vel topic
 		subscriber = rospy.Subscriber("/pos_and_vel", pos_and_vel, msg_callback)
-		
+
 		# execute in a loop
 		rospy.spin()
 			
