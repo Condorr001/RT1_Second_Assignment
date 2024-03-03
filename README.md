@@ -3,6 +3,8 @@
  Second assignment of the Research Track 1 course of the Robotics Engineering master, at UniGe. 
  Made by Valentina Condorelli, S4945679.
 
+ Sphinx documentation at: https://condorr001.github.io/RT1_Second_Assignment/
+
 # Simulator and graphics
 
 For the graphic part of this project, the Gazebo simulator was used to test the robot behaviour in a 3D environment. All the files used to spawn the robot and its surrounding environment were provided by our professor in a base repo, which you can find at the following link: https://github.com/CarmineD8/assignment_2_2023.git
