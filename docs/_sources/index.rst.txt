@@ -1,0 +1,48 @@
+.. rt1_second_assignment documentation master file, created by
+   sphinx-quickstart on Tue Feb 27 19:44:13 2024.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to rt1_second_assignment's documentation!
+=================================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+rt1_second_assignment documentation!
+**************************************
+
+This is the documentation of the rt1_second_assignment package!
+
+action_client Module
+====================
+
+.. automodule:: scripts.action_client
+   :members:
+   :undoc-members:
+   
+
+custom_msg_subscriber Module
+============================
+
+.. automodule:: scripts.custom_msg_subscriber
+   :members:
+   
+custom_service Module
+=====================
+
+.. automodule:: scripts.custom_service
+   :members:
+   
+   
+
