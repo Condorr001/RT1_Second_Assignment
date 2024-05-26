@@ -77,15 +77,20 @@
 
 <span class="sd">.. moduleauthor:: Valentina Condorelli</span>
 
-<span class="sd">Python node that implements a subscriber to the custom-defined message and computes three quantities based on the message data:</span>
-<span class="sd">    1) Robot distance from the goal, with threshold</span>
-<span class="sd">    2) Robot average linear speed along x axis</span>
-<span class="sd">    3) Robot average angular speed around z axis</span>
+<span class="sd">**Description**:</span>
 
-<span class="sd">The average is computed based on a predefined time window, which takes the last n values for the desired velocities to compute their average.</span>
+<span class="sd">    Python node that implements a subscriber to the custom-defined message and computes three quantities based on the message data:</span>
+<span class="sd">    </span>
+<span class="sd">    	1) Robot distance from the goal, with threshold</span>
+<span class="sd">    	2) Robot average linear speed along x axis</span>
+<span class="sd">    	3) Robot average angular speed around z axis</span>
+
+<span class="sd">    The average is computed based on a predefined time window, which takes the last n values for the desired velocities to compute their average.</span>
 
 <span class="sd">Publishers: </span>
-<span class="sd">    /pos_and_vel -&gt; custom message to obtain and print the robot position, linear velocity along x-axis and angular velocity around z-axis</span>
+<span class="sd">    ``/pos_and_vel`` -&gt; custom message to obtain and print the robot position, linear velocity along x-axis and angular velocity around z-axis</span>
+<span class="sd">    </span>
+<span class="sd">**Functions:**</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -108,12 +113,25 @@
 <div class="viewcode-block" id="msg_callback"><a class="viewcode-back" href="../../index.html#scripts.custom_msg_subscriber.msg_callback">[docs]</a><span class="k">def</span> <span class="nf">msg_callback</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Callback function used to compute three quantities:</span>
+<span class="sd">    </span>
 <span class="sd">        1) Robot distance from the goal, with threshold</span>
 <span class="sd">        2) Robot average linear speed along x axis</span>
 <span class="sd">        3) Robot average angular speed around z axis</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">    msg(pos_and_vel): the robot&#39;s desired quantities, defined in the custom message</span>
+<span class="sd">    **Args**:</span>
+<span class="sd">    </span>
+<span class="sd">    * msg(pos_and_vel): the robot&#39;s desired quantities, defined in the custom message</span>
+<span class="sd">    </span>
+<span class="sd">    :param des_pos_x: desired x position for the goal</span>
+<span class="sd">    :type des_pos_x: float</span>
+<span class="sd">    :param des_pos_y: desired y position for the goal</span>
+<span class="sd">    :type des_pos_y: float</span>
+<span class="sd">    :param dist: distance between the robot position and the goal</span>
+<span class="sd">    :type dist: float</span>
+<span class="sd">    :param lin_vel: linear velocity of the robot in the x-axis</span>
+<span class="sd">    :type lin_vel: float</span>
+<span class="sd">    :param ang_vel: angular velocity of the robot in the z-axis</span>
+<span class="sd">    :type ang_vel: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">dist</span>
     <span class="k">global</span> <span class="n">lin_vel</span>
@@ -164,8 +182,11 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function is used to initialize the custom-defined service that implements the call to the custom message.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">    required: required value for the service function to correctly operate</span>
+<span class="sd">    **Args**:</span>
+<span class="sd">    </span>
+<span class="sd">    * required: required value for the service function to correctly operate</span>
+<span class="sd">    </span>
+<span class="sd">    :return: service response, implementing ``dist``, ``lin_vel`` and ``ang_vel``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">dist</span>
     <span class="k">global</span> <span class="n">lin_vel</span>
@@ -180,20 +201,21 @@
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># initialize the node</span>
         <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s1">&#39;custom_msg_subscriber&#39;</span><span class="p">)</span>
 
         <span class="c1"># initialize the service</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Service</span><span class="p">(</span><span class="s1">&#39;average_pos_vel&#39;</span><span class="p">,</span> <span class="n">Average_pos_vel</span><span class="p">,</span> <span class="n">msg_function</span><span class="p">)</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Service used to call the custom message</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Service used to call the custom message</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
         <span class="c1"># inizialize the subscriber to the /pos_and_vel topic</span>
         <span class="n">subscriber</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s2">&quot;/pos_and_vel&quot;</span><span class="p">,</span> <span class="n">pos_and_vel</span><span class="p">,</span> <span class="n">msg_callback</span><span class="p">)</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Subscriber to the custom message</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subscriber to the custom message</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
         <span class="c1"># execute in a loop</span>

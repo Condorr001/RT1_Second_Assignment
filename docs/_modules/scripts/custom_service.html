@@ -77,11 +77,13 @@
 
 <span class="sd">.. moduleauthor:: Valentina Condorelli</span>
 
-<span class="sd">Python node that implements the custom-defined service used to return the last target coordinates sent in input by the user.</span>
+<span class="sd">**Description**:</span>
+
+<span class="sd">    Python node that implements the custom-defined service used to return the last target coordinates sent in input by the user.</span>
 
 
 <span class="sd">Publishers: </span>
-<span class="sd">    /reaching_goal/goal -&gt; robot&#39;s current goal</span>
+<span class="sd">    ``/reaching_goal/goal`` -&gt; robot&#39;s current goal</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -95,8 +97,14 @@
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Callback function used to get the current goal coordinates</span>
 <span class="sd">	</span>
-<span class="sd">	Args:</span>
-<span class="sd">	msg(PlanningActionGoal): robot&#39;s current goal</span>
+<span class="sd">	**Args**:</span>
+<span class="sd">	</span>
+<span class="sd">	* msg(PlanningActionGoal): robot&#39;s current goal</span>
+<span class="sd">	</span>
+<span class="sd">	:param x: current goal x coordinate</span>
+<span class="sd">	:type x: float</span>
+<span class="sd">	:param y: current goal y coordinate</span>
+<span class="sd">	:type y: float</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">global</span> <span class="n">x</span>
 	<span class="k">global</span> <span class="n">y</span>
@@ -109,10 +117,13 @@
 
 <div class="viewcode-block" id="srv_function"><a class="viewcode-back" href="../../index.html#scripts.custom_service.srv_function">[docs]</a><span class="k">def</span> <span class="nf">srv_function</span><span class="p">(</span><span class="n">required</span><span class="p">):</span>
 <span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	This function returns the coordinates of the current robot&#39;s target</span>
+<span class="sd">	This function returns the coordinates of the current robot&#39;s goal</span>
 <span class="sd">	</span>
-<span class="sd">	Args:</span>
-<span class="sd">	required: required value for the service function to correctly operate</span>
+<span class="sd">	**Args**:</span>
+<span class="sd">	</span>
+<span class="sd">	* required: required value for the service function to correctly operate</span>
+<span class="sd">	</span>
+<span class="sd">	:return: service response, implementing ``x`` and ``y``</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">global</span> <span class="n">x</span>
 	<span class="k">global</span> <span class="n">y</span>

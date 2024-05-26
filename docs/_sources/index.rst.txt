@@ -29,7 +29,7 @@ action_client Module
 
 .. automodule:: scripts.action_client
    :members:
-   :undoc-members:
+   :show-inheritance:
    
 
 custom_msg_subscriber Module
@@ -37,12 +37,13 @@ custom_msg_subscriber Module
 
 .. automodule:: scripts.custom_msg_subscriber
    :members:
+   :noindex:
    
 custom_service Module
 =====================
 
 .. automodule:: scripts.custom_service
    :members:
-   
+   :noindex:
    
 
