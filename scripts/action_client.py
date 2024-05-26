@@ -6,20 +6,23 @@
 
 .. moduleauthor:: Valentina Condorelli
 
-Python node that implements an action client that communicates with the
-provided action server to move the robot towards a user-defined point.
-To this purpose, the bug_0 algorithm was implemented.
+Description:
+    Python node that implements an action client that communicates with the
+    provided action server to move the robot towards a user-defined point.
+    To this purpose, the `bug_0 algorithm <https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10101325>`_ was implemented.
 
 Subscribers:
-    /pos_and_vel -> custom message to obtain and print the robot position, linear velocity along x-axis and angular velocity around z-axis
+    ``/pos_and_vel`` -> custom message to obtain and print the robot position, linear velocity along x-axis and angular velocity around z-axis
 
 
 Publishers:
-   /odom -> robot's current position, velocity and other odometry data
-   /reaching_goal/result -> robot's current status
+   ``/odom`` -> robot's current position, velocity and other odometry data
+   ``/reaching_goal/result`` -> robot's current status
 
 Action client topic:
-   /reaching_goal -> used to communicate with the action server "bug_as"
+   ``/reaching_goal`` -> used to communicate with the action server "bug_as"
+   
+**Functions:**
 """
 
 import rospy
@@ -56,7 +59,15 @@ goal_has_been_reached = False
 
 
 def status0():
-    """ First status of the dictionary used to implement a switch-case structure in the *robot_status()* function
+    """ First status of the dictionary used to implement a switch-case structure in the ``robot_status()`` function
+    
+    :param goal_input: user input to set the goal
+    :type goal_input: string
+    :param x: x coordinate of the goal, taken from ``goal_input``
+    :type x: float
+    :param y: y coordinate of the goal, taken from ``goal_input``
+    :type y: float
+    
     """
     global tmp_status
     """ This variable is used to switch between the different robot statuses
@@ -99,7 +110,10 @@ def status0():
 
 
 def status1():
-    """ Second status of the dictionary used to implement a switch-case structure in the *robot_status()* function
+    """ Second status of the dictionary used to implement a switch-case structure in the ``robot_status()`` function
+    
+    :param cancel_input: user input to, eventually, cancdel the goal
+    :type cancel_input: string
     """
     global tmp_status
     global goal_has_been_reached
@@ -141,7 +155,10 @@ def status1():
 
 
 def status2():
-    """ Third status of the dictionary used to implement a switch-case structure in the *robot_status()* function
+    """ Third status of the dictionary used to implement a switch-case structure in the ``robot_status()`` function
+    
+    :param new_goal_input: user input to set a new goal or exit the program
+    :type new_goal_input: string
     """
     global tmp_status
     global goal_has_been_reached
@@ -179,13 +196,13 @@ def status2():
 
 
 def default():
-    """ Default status of the dictionary used to implement a switch-case structure in the *robot_status()* function. It corresponds to an error case.
+    """ Default status of the dictionary used to implement a switch-case structure in the ``robot_status()`` function. It corresponds to an error case.
     """
     print("\n\n Error in tmp_status value\n")
 
 
 def switch(case):
-  """ Dictionary used to implement a switch-case structure in the *robot_status()* function
+  """ Dictionary used to implement a switch-case structure in the ``robot_status()`` function
   """
   switcher_dictionary = {
        0: status0,
@@ -199,8 +216,9 @@ def publish_custom_message(msg):
     """
     This function publishes the custom-defined message *pos_and_vel*
 
-    Args:
-    msg(Odometry): the robot's position and vellocity
+    **Args**:
+    
+    * msg(Odometry): the robot's position and vellocity
     """
     # get position, linear velocity and angular velocity from the msg in the /odom topic
     position = msg.pose.pose.position
@@ -223,8 +241,9 @@ def callback_goal_result(msg):
     """
     Callback function used to check if the goal has been reached by the robot
 
-    Args:
-    msg(PlanningActionResult): the robot's status
+    **Args**:
+    
+    * msg(PlanningActionResult): the robot's status
     """
     global goal_has_been_reached
 
@@ -283,7 +302,10 @@ def exec_custom_msg_service():
 
 def robot_status(): 
     """
-    This function manages all the robot's actions in the main
+    This function manages all the robot's actions in the ``main()`` function
+    
+    :param tmp_status: global variable used in the state machine to switch between the states
+    :type tmp_status: int
     """
 
     #initially, the status is 0, as the robot waits for an input when the program starts
@@ -296,8 +318,10 @@ def robot_status():
     while not rospy.is_shutdown():
         switch(tmp_status)
 
-
-if __name__ == '__main__':
+def main():
+    """
+    This is the main function of the project, where all the necessary setups are done
+    """
     try:
         # initialize the node
         rospy.init_node('action_client')
@@ -339,3 +363,8 @@ if __name__ == '__main__':
 
     except rospy.ROSInterruptException:
         print("\n Error: program died unexpectedly", file=sys.stderr)
+
+
+if __name__ == '__main__':
+    main()
+    

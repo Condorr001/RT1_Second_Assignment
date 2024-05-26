@@ -6,11 +6,13 @@
 
 .. moduleauthor:: Valentina Condorelli
 
-Python node that implements the custom-defined service used to return the last target coordinates sent in input by the user.
+**Description**:
+
+    Python node that implements the custom-defined service used to return the last target coordinates sent in input by the user.
 
 
 Publishers: 
-    /reaching_goal/goal -> robot's current goal
+    ``/reaching_goal/goal`` -> robot's current goal
 
 """
 
@@ -24,8 +26,14 @@ def srv_callback(msg):
 	"""
 	Callback function used to get the current goal coordinates
 	
-	Args:
-	msg(PlanningActionGoal): robot's current goal
+	**Args**:
+	
+	* msg(PlanningActionGoal): robot's current goal
+	
+	:param x: current goal x coordinate
+	:type x: float
+	:param y: current goal y coordinate
+	:type y: float
 	"""
 	global x
 	global y
@@ -38,10 +46,13 @@ def srv_callback(msg):
 
 def srv_function(required):
 	"""
-	This function returns the coordinates of the current robot's target
+	This function returns the coordinates of the current robot's goal
 	
-	Args:
-	required: required value for the service function to correctly operate
+	**Args**:
+	
+	* required: required value for the service function to correctly operate
+	
+	:return: service response, implementing ``x`` and ``y``
 	"""
 	global x
 	global y

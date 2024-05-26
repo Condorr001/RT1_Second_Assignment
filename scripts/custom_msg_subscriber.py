@@ -6,15 +6,20 @@
 
 .. moduleauthor:: Valentina Condorelli
 
-Python node that implements a subscriber to the custom-defined message and computes three quantities based on the message data:
-    1) Robot distance from the goal, with threshold
-    2) Robot average linear speed along x axis
-    3) Robot average angular speed around z axis
+**Description**:
 
-The average is computed based on a predefined time window, which takes the last n values for the desired velocities to compute their average.
+    Python node that implements a subscriber to the custom-defined message and computes three quantities based on the message data:
+    
+    	1) Robot distance from the goal, with threshold
+    	2) Robot average linear speed along x axis
+    	3) Robot average angular speed around z axis
+
+    The average is computed based on a predefined time window, which takes the last n values for the desired velocities to compute their average.
 
 Publishers: 
-    /pos_and_vel -> custom message to obtain and print the robot position, linear velocity along x-axis and angular velocity around z-axis
+    ``/pos_and_vel`` -> custom message to obtain and print the robot position, linear velocity along x-axis and angular velocity around z-axis
+    
+**Functions:**
 
 """
 
@@ -26,7 +31,7 @@ from rt1_second_assignment.msg import pos_and_vel
 from rt1_second_assignment.srv import Average_pos_vel, Average_pos_velResponse
 
 # get the window size from the parameters in the launch file
-window_size = rospy.get_param('/window_size')
+#window_size = rospy.get_param('/window_size')
 
 # initialize the global variables
 dist = 0
@@ -37,12 +42,25 @@ ang_vel = 0
 def msg_callback(msg):
     """
     Callback function used to compute three quantities:
+    
         1) Robot distance from the goal, with threshold
         2) Robot average linear speed along x axis
         3) Robot average angular speed around z axis
 
-    Args:
-    msg(pos_and_vel): the robot's desired quantities, defined in the custom message
+    **Args**:
+    
+    * msg(pos_and_vel): the robot's desired quantities, defined in the custom message
+    
+    :param des_pos_x: desired x position for the goal
+    :type des_pos_x: float
+    :param des_pos_y: desired y position for the goal
+    :type des_pos_y: float
+    :param dist: distance between the robot position and the goal
+    :type dist: float
+    :param lin_vel: linear velocity of the robot in the x-axis
+    :type lin_vel: float
+    :param ang_vel: angular velocity of the robot in the z-axis
+    :type ang_vel: float
     """
     global dist
     global lin_vel
@@ -93,8 +111,11 @@ def msg_function(required):
     """
     This function is used to initialize the custom-defined service that implements the call to the custom message.
 
-    Args:
-    required: required value for the service function to correctly operate
+    **Args**:
+    
+    * required: required value for the service function to correctly operate
+    
+    :return: service response, implementing ``dist``, ``lin_vel`` and ``ang_vel``
     """
     global dist
     global lin_vel
@@ -109,20 +130,21 @@ def msg_function(required):
 
 
 if __name__ == '__main__':
+    """
+    Main function
+    """
     try:
         # initialize the node
         rospy.init_node('custom_msg_subscriber')
 
         # initialize the service
         s = rospy.Service('average_pos_vel', Average_pos_vel, msg_function)
-        """
-	Service used to call the custom message
+        """Service used to call the custom message
 	"""
 
         # inizialize the subscriber to the /pos_and_vel topic
         subscriber = rospy.Subscriber("/pos_and_vel", pos_and_vel, msg_callback)
-        """
-	Subscriber to the custom message
+        """Subscriber to the custom message
 	"""
 
         # execute in a loop
